@@ -302,6 +302,43 @@ filters, the container name is either `chart-image` (if at the top
 level), or the key under which the image is given (e.g., `"subsystem"`
 from the example above).
 
+Top level image example:
+
+```yaml
+kind: HelmRelease
+metadata:
+  annotations:
+    flux.weave.works/automated: "true"
+    flux.weave.works/tag.chart-image: semver:~4.0
+spec:
+  values:
+    image:
+      repository: bitnami/mongodb
+      tag: 4.0.3
+```
+
+Sub-section images example:
+
+```yaml
+kind: HelmRelease
+metadata:
+  annotations:
+    flux.weave.works/automated: "true"
+    flux.weave.works/tag.prometheus: semver:~2.3
+    flux.weave.works/tag.alertmanager: glob:v0.15.*
+    flux.weave.works/tag.nats: regex:^0.6.*
+spec:
+  values:
+    prometheus:
+      image: prom/prometheus:v2.3.1
+    alertmanager:
+      image: prom/alertmanager:v0.15.0
+    nats:
+      image:
+        repository: nats-streaming
+        tag: 0.6.0
+```
+
 -------------
 
 <a name="why-repo-urls">**Why use URLs to refer to repositories, rather than names?**</a> [^](#cite-why-repo-urls)
